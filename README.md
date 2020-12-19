@@ -4,7 +4,7 @@ Implement a simple weight-tracker app.
 
 #### This test requires you to write code for NodeJS and Flutter
 
-### NOdeJS: Write something using `Express` using `NodeJS` to `create an API` that has the following endpoints:
+### NodeJS: Write something using `Express` using `NodeJS` to `create an API` that has the following endpoints:
 
 - /login
 - /sign_up
