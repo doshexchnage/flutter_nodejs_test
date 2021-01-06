@@ -50,7 +50,7 @@ The assignment will be evaluated according to the following criteria:
 
 Making the UI look nice is not required as part of this task - but is a bonus!
 
-The expected duration of this assignment is between 1 and 2 days ONLY
+The expected duration of this assignment is between 1 and 4 days ONLY
 
 When submitting the assignment, compress the entire Flutter project into a zip file, and send an email to `alex@doshex.com, siya@doshex.com, and fred@doshex.com` to notify them of your completion. 
 
