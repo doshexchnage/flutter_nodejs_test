@@ -1,29 +1,51 @@
+// ignore_for_file: prefer_const_constructors_in_immutables
+
 import 'package:flutter/material.dart';
+import 'package:weight_app/constants.dart';
 
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: secondaryColor,
           title: Text(widget.title),
         ),
-        body: Center(child: Text('$_counter')));
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Center(
+                      child: Text('Hello World',
+                          style: TextStyle(color: primaryColor)),
+                    ),
+                    color: bgColor,
+                  )),
+              Expanded(
+                  flex: 2,
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Center(
+                      child: Text('Hello World',
+                          style: TextStyle(color: primaryColor)),
+                    ),
+                    color: bgColor,
+                  ))
+            ],
+          ),
+        ));
   }
 }
