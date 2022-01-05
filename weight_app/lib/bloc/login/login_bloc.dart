@@ -13,8 +13,101 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitial()) {
-    on<LoginEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<UserNameChanged>(_onEmailChanged);
+    on<PasswordChanged>(_onPasswordChanged);
+    on<UserNameUnfocused>(_onEmailUnfocused);
+    on<PasswordUnfocused>(_onPasswordUnfocused);
+    on<TogglePassword>(_onTogglePassword);
+    on<FormSubmitted>(_onFormSubmiited);
+  }
+
+  void _onEmailChanged(UserNameChanged event, Emitter<LoginState> emit) {
+    final email = Name.dirty(event.userName);
+    emit(state.copyWith(
+      userName: email.valid ? email : Name.pure(event.userName),
+      password: state.password,
+      togglePassword: state.togglePassword,
+      status: Formz.validate([email, state.password]),
+    ));
+  }
+
+  void _onPasswordChanged(PasswordChanged event, Emitter<LoginState> emit) {
+    final password = Password.dirty(event.password);
+    emit(state.copyWith(
+      userName: state.userName,
+      password: password.valid ? password : Password.pure(event.password),
+      togglePassword: state.togglePassword,
+      status: Formz.validate([state.userName, password]),
+    ));
+  }
+
+  void _onEmailUnfocused(UserNameUnfocused event, Emitter<LoginState> emit) {
+    final userName = Name.dirty(state.userName.value);
+    emit(state.copyWith(
+      userName: userName,
+      password: state.password,
+      togglePassword: state.togglePassword,
+      status: Formz.validate([userName, state.password]),
+    ));
+  }
+
+  void _onPasswordUnfocused(PasswordUnfocused event, Emitter<LoginState> emit) {
+    final password = Password.dirty(state.password.value);
+    emit(state.copyWith(
+      userName: state.userName,
+      password: password,
+      togglePassword: state.togglePassword,
+      status: Formz.validate([state.userName, password]),
+    ));
+  }
+
+  void _onTogglePassword(TogglePassword event, Emitter<LoginState> emit) {
+    emit(state.copyWith(
+        userName: state.userName,
+        password: state.password,
+        togglePassword: !state.togglePassword,
+        status: Formz.validate([state.userName, state.password])));
+  }
+
+  Future<void> _onFormSubmiited(
+      FormSubmitted event, Emitter<LoginState> emit) async {
+    final userName = Name.dirty(state.userName.value);
+    final password = Password.dirty(state.password.value);
+
+    emit(state.copyWith(
+      userName: userName,
+      password: password,
+      togglePassword: state.togglePassword,
+      status: Formz.validate([userName, password]),
+    ));
+
+    if (state.status.isValidated) {
+      // Display progress indicator
+      emit(SubmittingLogin());
+
+      // Connecting with login repository
+      // try {
+      //   var apiResponse = await repo.userLogin(email.value, password.value);
+
+      //   if (apiResponse.responseCode == 201) {
+      //     if (apiResponse.userInfo != null) {
+      //       emit(LoginSuccess(apiResponse.userInfo!));
+      //     } else {
+      //       await Future.delayed(const Duration(seconds: 2));
+      //       emit(const LoginResponse("Detail", "Please Try Again", true));
+      //       await Future.delayed(const Duration(seconds: 3));
+      //       emit(InitialLogin());
+      //     }
+      //   } else {
+      //     emit(LoginResponse("Detail", apiResponse.msg.toString(), true));
+      //     await Future.delayed(const Duration(seconds: 3));
+      //     emit(InitialLogin());
+      //   }
+      // } catch (e) {
+      //   emit(LoginResponse("Detail", e.toString(), true));
+      //   await Future.delayed(const Duration(seconds: 3));
+      //   emit(InitialLogin());
+      // }
+    }
   }
 }

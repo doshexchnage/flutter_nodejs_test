@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:weight_app/ui/home.dart';
 
+import 'ui/login.dart';
+
 
 class MyApp extends StatelessWidget {
    MyApp({Key? key}) : super(key: key);
@@ -15,7 +17,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  HomePage(title: 'Flutter Demo Home Page'),
+      home: LoginPage(title: 'Login Page'),
+      // home:  HomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

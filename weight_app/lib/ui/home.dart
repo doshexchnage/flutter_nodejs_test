@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
-import 'package:weight_app/constants.dart';
+import 'package:weight_app/models/constants.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key, required this.title}) : super(key: key);
