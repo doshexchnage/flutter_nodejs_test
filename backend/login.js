@@ -32,6 +32,7 @@ app.listen(port, () => {
 });
 
 app.post('/registration', function(req, res){
+    print(res.body);
     var username = req.body.username;
     var password = req.body.password;
     var age = req.body.age;
