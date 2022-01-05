@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
 import 'package:weight_app/models/formz/name.dart';
@@ -84,6 +85,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (state.status.isValidated) {
       // Display progress indicator
       emit(SubmittingLogin());
+      if (kDebugMode) {
+        print(userName.value);
+        print(password.value);
+      }
+      emit(LoginInitial());
 
       // Connecting with login repository
       // try {

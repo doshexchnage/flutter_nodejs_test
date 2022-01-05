@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors, prefer_function_declarations_over_variables
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,9 +58,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: bgColor,
+        backgroundColor: secondaryColor,
         appBar: AppBar(
-          title: Text(widget.title),
+          backgroundColor: bgColor,
+          title: Center(child: Text(widget.title)),
         ),
         body: SafeArea(
             child: ListView(
@@ -129,8 +130,8 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
-      margin: EdgeInsets.symmetric(vertical: 50),
-      height: 350,
+      margin: EdgeInsets.symmetric(vertical: 75),
+      height: 320,
       child: Column(
         children: [
           // Username Input
@@ -146,13 +147,15 @@ class _LoginFormState extends State<LoginForm> {
                         initialValue: state.userName.value,
                         focusNode: _userNameFocusNode,
                         cursorColor: Colors.white,
+                        style: TextStyle(color: Colors.white, fontSize: 24),
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.all(12),
                           isDense: true,
-                          labelStyle: TextStyle(color: Colors.white),
+                          labelStyle:
+                              TextStyle(color: Colors.white, fontSize: 20),
                           helperStyle: TextStyle(color: Colors.white),
                           icon: const Icon(Icons.account_circle,
-                              color: Colors.white),
+                              size: 30, color: Colors.white),
                           helperText: state.userName.valid
                               ? null
                               : '''A complete, valid first name e.g John''',
@@ -183,12 +186,18 @@ class _LoginFormState extends State<LoginForm> {
                         cursorColor: Colors.white,
                         initialValue: state.password.value,
                         focusNode: _passwordFocusNode,
+                        style: TextStyle(color: Colors.white, fontSize: 24),
                         decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(12),
                             isDense: true,
-                            labelStyle: TextStyle(color: Colors.white),
+                            labelStyle:
+                                TextStyle(color: Colors.white, fontSize: 20),
                             helperStyle: TextStyle(color: Colors.white),
-                            icon: const Icon(Icons.lock, color: Colors.white),
+                            icon: const Icon(
+                              Icons.lock,
+                              color: Colors.white,
+                              size: 30,
+                            ),
                             helperText: state.password.valid
                                 ? null
                                 : '''Password must contain at least eight characters, at least one number and both lower and uppercase letters and special characters''',
@@ -224,12 +233,15 @@ class _LoginFormState extends State<LoginForm> {
               flex: 1,
               child: Container(
                   width: 150,
-                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   child: BlocBuilder<LoginBloc, LoginState>(
                     buildWhen: (previous, current) =>
                         previous.status != current.status,
                     builder: (context, state) {
                       return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: bgColor,
+                        ),
                         onPressed: state.status.isValidated
                             ? () =>
                                 context.read<LoginBloc>().add(FormSubmitted())
@@ -237,12 +249,26 @@ class _LoginFormState extends State<LoginForm> {
                         // style: ElevatedButton.styleFrom(
                         //   onSurface: Colors.blue,
                         // ),
-                        child: const Text('Login'),
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       );
                     },
                   )))
         ],
       ),
     );
+  }
+
+  MaterialStateProperty<Color> getColor(Color one, Color two) {
+    final getColor = (Set<MaterialState> states) {
+      if (states.contains(MaterialState.focused)) {
+        return one;
+      } else {
+        return two;
+      }
+    };
+    return MaterialStateProperty.resolveWith(getColor);
   }
 }
