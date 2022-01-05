@@ -3,35 +3,29 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
-class UserRegistrationResponse {
-  UserRegistrationResponse(this.responseCode, this.msg);
+import 'models/registration.dart';
 
-  int responseCode;
-  String msg;
-}
+
 
 class UserRegistrationAPI {
   Future<UserRegistrationResponse> requestFunction(
       String userName, String password, int age) async {
     var requestBody = {};
     requestBody["username"] = userName;
-    requestBody["password"] = password;
+    requestBody["password"] = md5.convert(utf8.encode(password)).toString();
     requestBody["age"] = age;
 
     final response = await http
         .post(Uri.parse("${authUrl}registration"),
-            body:requestBody)
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode(requestBody))
         .timeout(Duration(seconds: 30))
-        .catchError((e) => throw ('Network Connection Error'));
+        .catchError((e) => throw ('$e'));
 
     if (response.statusCode == 201) {
-      var responseMsg = jsonDecode(response.body);
-      print(responseMsg);
-
-      return UserRegistrationResponse(201, responseMsg);
+      return UserRegistrationResponse(201, response.body);
     } else if (response.statusCode == 401) {
-      var responseMsg = jsonDecode(response.body)['detail'];
-      return UserRegistrationResponse(401, responseMsg);
+      return UserRegistrationResponse(401, response.body);
     } else {
       throw ('Invalid Request');
     }

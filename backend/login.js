@@ -32,7 +32,6 @@ app.listen(port, () => {
 });
 
 app.post('/registration', function(req, res){
-    print(res.body);
     var username = req.body.username;
     var password = req.body.password;
     var age = req.body.age;
@@ -45,8 +44,9 @@ app.post('/registration', function(req, res){
                 res.send('User already exists');
             } else {
                 connection.query('INSERT INTO users (username, password, age) VALUES (?, ?, ?)', [username, password, age], function(err, results){
-                    res.send('User registered successfully!');
                     res.status(201)
+                    res.send('User registered successfully!');
+                    
                     res.end();
                 });
             }
@@ -58,6 +58,8 @@ app.post('/registration', function(req, res){
     }
 });
 
+
+
 app.post('/login', function(req, res){
     var username = req.body.username;
     var password = req.body.password;
@@ -65,8 +67,14 @@ app.post('/login', function(req, res){
     if (username && password){
         connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(err, results){
             if (results.length > 0){
+                // console.log(results)
                 res.status(201)
-                res.send('User logged in successfully!');
+                res.send({
+                    "message": "Successful User Registration",
+                    "userId": results[0].userID,
+                    "username": results[0].username,
+                    "age": results[0].age
+                });
             } else {
                 res.status(401)
                 res.send("Username or password is incorrect!");
@@ -89,6 +97,7 @@ app.post('/user/add_weight', function(req, res){
             if (results.length == 0){
                 res.status(401)
                 res.send("User doesn't exist!");
+                res.end();
             } else {
                 connection.query('INSERT INTO weight (userID, value) VALUES (?, ?)', [userID, value], function(err, results){
                     res.status(201)
@@ -113,6 +122,7 @@ app.get('/user/get_weight/:userID', function(req, res){
             if (results.length == 0){
                 res.status(401)
                 res.send("User doesn't exist!");
+                res.end();
             } else {
                 connection.query('SELECT * FROM weight WHERE userID = ?', [userID], function(err, results){
                     if (results.length == 0){
@@ -142,9 +152,10 @@ app.delete('/user/delete_weight/:id', function(req, res){
             if (results.length == 0){
                 res.status(401)
                 res.send("Weight doesn't exist!");
+                res.end();
             } else {
                 connection.query('DELETE FROM weight WHERE id = ?', [id], function(err, results){
-                    res.status(401)
+                    res.status(201)
                     res.send('Weight deleted successfully!');
                     res.end();
                 });
