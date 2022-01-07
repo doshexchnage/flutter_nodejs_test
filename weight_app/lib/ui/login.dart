@@ -163,7 +163,7 @@ class _LoginFormState extends State<LoginForm> {
                           labelText: 'First Name',
                           errorMaxLines: 2,
                           errorText: state.userName.invalid
-                              ? '''username is 8-20 characters long,  NO _ or . at the begging and end, NO __ or _. or ._ or .. inside'''
+                              ? '''Username must be 3 or more charactors without spaces'''
                               : null,
                         ),
                         onChanged: (value) {

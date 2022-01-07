@@ -14,15 +14,15 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitial()) {
-    on<UserNameChanged>(_onEmailChanged);
+    on<UserNameChanged>(_onUserNameChanged);
     on<PasswordChanged>(_onPasswordChanged);
-    on<UserNameUnfocused>(_onEmailUnfocused);
+    on<UserNameUnfocused>(_onUserNameUnfocused);
     on<PasswordUnfocused>(_onPasswordUnfocused);
     on<TogglePassword>(_onTogglePassword);
     on<FormSubmitted>(_onFormSubmiited);
   }
 
-  void _onEmailChanged(UserNameChanged event, Emitter<LoginState> emit) {
+  void _onUserNameChanged(UserNameChanged event, Emitter<LoginState> emit) {
     final email = Name.dirty(event.userName);
     emit(state.copyWith(
       userName: email.valid ? email : Name.pure(event.userName),
@@ -42,7 +42,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     ));
   }
 
-  void _onEmailUnfocused(UserNameUnfocused event, Emitter<LoginState> emit) {
+  void _onUserNameUnfocused(UserNameUnfocused event, Emitter<LoginState> emit) {
     final userName = Name.dirty(state.userName.value);
     emit(state.copyWith(
       userName: userName,

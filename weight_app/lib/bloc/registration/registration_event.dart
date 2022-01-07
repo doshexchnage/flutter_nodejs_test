@@ -19,7 +19,6 @@ class UserNameChanged extends RegistrationEvent {
 
 class UserNameUnfocused extends RegistrationEvent {}
 
-
 class UserAgeChanged extends RegistrationEvent {
   const UserAgeChanged({required this.age});
 

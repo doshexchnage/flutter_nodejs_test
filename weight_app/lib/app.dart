@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:weight_app/ui/home.dart';
+import 'package:weight_app/ui/registration.dart';
 
 import 'ui/login.dart';
 
-
 class MyApp extends StatelessWidget {
-   MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(title: 'Login Page'),
+      home: RegistrationPage(title: 'User Registration'),
+      // home: LoginPage(title: 'User Login'),
       // home:  HomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
-
