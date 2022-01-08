@@ -214,7 +214,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         print(userName.value);
         print(age.value);
         print(password.value);
-        print(state.confirmPassword);
+        print(confirmPassword.value);
       }
     }
   }

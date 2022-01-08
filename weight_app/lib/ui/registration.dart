@@ -118,7 +118,7 @@ class _LoginFormState extends State<LoginForm> {
 
     _ageFocusNode.addListener(() {
       if (!_ageFocusNode.hasFocus) {
-        context.read<RegistrationBloc>().add(UserNameUnfocused());
+        context.read<RegistrationBloc>().add(UserAgeUnfocused());
         // FocusScope.of(context).requestFocus(_passwordFocusNode);
       }
     });
@@ -132,7 +132,7 @@ class _LoginFormState extends State<LoginForm> {
 
     _confirmPasswordFocusNode.addListener(() {
       if (!_confirmPasswordFocusNode.hasFocus) {
-        context.read<RegistrationBloc>().add(PasswordUnfocused());
+        context.read<RegistrationBloc>().add(ConfirmPasswordUnfocused());
       }
     });
   }
@@ -217,12 +217,14 @@ class _LoginFormState extends State<LoginForm> {
                           helperStyle: TextStyle(color: Colors.white),
                           icon: const Icon(Icons.account_circle,
                               size: 30, color: Colors.white),
-                          helperText: '''Age as a whole Number e.g 16''',
+                          helperText: state.age.valid
+                              ? null
+                              : '''Age as a whole Number e.g 16''',
                           helperMaxLines: 2,
                           labelText: 'Age',
                           errorMaxLines: 2,
                           errorText: state.age.invalid
-                              ? '''Must be 12 years and older'''
+                              ? '''Must be 12 years and older to register'''
                               : null,
                         ),
                         onChanged: (value) {
@@ -342,7 +344,8 @@ class _LoginFormState extends State<LoginForm> {
                           context.read<RegistrationBloc>().add(
                               ConfirmPasswordChanged(confirmPassword: value));
                         },
-                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.text,
+                        // textInputAction: TextInputAction.done,
                       );
                     },
                   ))),

@@ -15,6 +15,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: bgColor,
         appBar: AppBar(
           backgroundColor: secondaryColor,
           title: Text(widget.title),
@@ -25,13 +26,15 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                   flex: 1,
                   child: Container(
+                    margin:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
                     width: double.infinity,
                     height: double.infinity,
                     child: Center(
                       child: Text('Hello World',
                           style: TextStyle(color: primaryColor)),
                     ),
-                    color: bgColor,
+                    color: secondaryColor,
                   )),
               Expanded(
                   flex: 2,

@@ -14,7 +14,7 @@ class Age extends FormzInput<String, AgeValidationError> {
   AgeValidationError? validator(String value) {
     if (int.tryParse(value) != null) {
       int age = int.parse(value);
-      if (age >= 12 && age <= 150) {
+      if (age >= 12) {
         return null;
       } else {
         return AgeValidationError.invalid;

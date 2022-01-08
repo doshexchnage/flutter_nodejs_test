@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: RegistrationPage(title: 'User Registration'),
+      // home: RegistrationPage(title: 'User Registration'),
       // home: LoginPage(title: 'User Login'),
-      // home:  HomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(title: 'Weight App'),
     );
   }
 }

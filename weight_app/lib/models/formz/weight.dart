@@ -1,8 +1,8 @@
 import 'package:formz/formz.dart';
 
-enum AmountValidationError { invalid }
+enum WeightValidationError { invalid }
 
-class Weight extends FormzInput<String, AmountValidationError> {
+class Weight extends FormzInput<String, WeightValidationError> {
   const Weight.pure([String value = '']) : super.pure(value);
   const Weight.dirty([String value = '']) : super.dirty(value);
 
@@ -11,16 +11,16 @@ class Weight extends FormzInput<String, AmountValidationError> {
   // );
 
   @override
-  AmountValidationError? validator(String value) {
+  WeightValidationError? validator(String value) {
 
         if (double.tryParse(value) != null) {
           double weight = double.parse(double.parse(value).toStringAsFixed(2));
-          if (weight > 5.00 && weight < 10000.00){
+          if (weight > 0.0){
             return null;
           }
         }
 
-      return AmountValidationError.invalid;
+      return WeightValidationError.invalid;
   }
 }
 
