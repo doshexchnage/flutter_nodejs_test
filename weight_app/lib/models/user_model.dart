@@ -9,9 +9,9 @@ class UserLogin {
   int? age;
 
   factory UserLogin.fromJson(Map<String, dynamic> json) => UserLogin(
-      userID: json["id"],
-      userName: json["firstname"],
-      age: json["lastname"]);
+      userID: json["userId"],
+      userName: json["userId"],
+      age: json["age"]);
 
   Map<String, dynamic> toJson() => {
         "userID": userID,

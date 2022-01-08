@@ -10,8 +10,6 @@ export 'src/api_files/login.dart';
 export 'src/api_files/weight.dart';
 
 // Models
-
-
 export 'src/api_files/models/registration.dart';
 export 'src/api_files/models/login.dart';
 export 'src/api_files/models/weights.dart';

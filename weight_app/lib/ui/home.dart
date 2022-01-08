@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weight_app/bloc/user_weight/add%20weight/add_weight_bloc.dart';
 import 'package:weight_app/models/constants.dart';
+import 'package:weight_app/ui/widgets/weight_form.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key, required this.title}) : super(key: key);
@@ -27,13 +30,14 @@ class _HomePageState extends State<HomePage> {
                   flex: 1,
                   child: Container(
                     margin:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
                     width: double.infinity,
                     height: double.infinity,
-                    child: Center(
-                      child: Text('Hello World',
-                          style: TextStyle(color: primaryColor)),
-                    ),
+                    child: BlocProvider(
+                        create: (context) => AddWeightBloc(),
+                        child: AddWeightForm()),
                     color: secondaryColor,
                   )),
               Expanded(

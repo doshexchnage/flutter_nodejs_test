@@ -5,8 +5,6 @@ import 'package:crypto/crypto.dart';
 
 import 'models/login.dart';
 
-
-
 class UserLoginAPI {
   Future<UserLoginResponseModel> requestFunction(
       String userName, String password) async {
@@ -22,16 +20,16 @@ class UserLoginAPI {
         .catchError((e) => throw ('$e'));
 
     if (response.statusCode == 201) {
- 
       var reqResponse = jsonDecode(response.body);
-      return UserLoginResponseModel(UserLoginResponse(201, reqResponse["message"]), {
+      return UserLoginResponseModel(
+          UserLoginResponse(201, reqResponse["message"]), {
         "userId": reqResponse["userId"],
         "username": reqResponse["username"],
         "age": reqResponse["age"]
       });
     } else if (response.statusCode == 401) {
       var responseMsg = response.body;
-      return UserLoginResponseModel(UserLoginResponse(401, responseMsg), {});
+      return UserLoginResponseModel(UserLoginResponse(401, responseMsg), null);
     } else {
       throw ('Invalid Request');
     }

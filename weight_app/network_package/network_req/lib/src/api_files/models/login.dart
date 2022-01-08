@@ -9,5 +9,5 @@ class UserLoginResponseModel {
   UserLoginResponseModel(this.response, this.data);
 
   UserLoginResponse response;
-  Map<String, dynamic> data;
+  Map<String, dynamic>? data;
 }
