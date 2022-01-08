@@ -17,7 +17,7 @@ class UserWeight {
     id = json['id'];
     userID = json['userID'];
     date = DateTime.parse(json['date']);
-    value = json['value'];
+    value = double.parse(json['value'].toString());
   }
 
   Map<String, dynamic> toJson() {

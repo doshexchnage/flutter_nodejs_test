@@ -34,7 +34,7 @@ class _AddWeightFormState extends State<AddWeightForm> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
-            flex: 2,
+            flex: 3,
             child: WeightInput(key: widget.key, focusNode: _weightFocusNode)),
         Expanded(flex: 1, child: SubmitButton(key: widget.key))
       ],
@@ -55,7 +55,7 @@ class WeightInput extends StatelessWidget {
           initialValue: state.weight.value,
           focusNode: focusNode,
           decoration: InputDecoration(
-            labelStyle: TextStyle(color: Colors.white),
+            labelStyle: TextStyle(color: Colors.white, fontSize: 20),
             helperStyle: TextStyle(color: Colors.white),
             icon: const Icon(Icons.money, color: Colors.white),
             helperText: '''Weight To The Nearest Decimal e.g 7.2''',
