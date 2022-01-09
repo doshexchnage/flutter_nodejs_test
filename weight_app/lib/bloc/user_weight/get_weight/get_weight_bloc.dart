@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:network_req/network_req.dart';
+import 'package:weight_app/models/formz/weight.dart';
 
 part 'get_weight_event.dart';
 part 'get_weight_state.dart';

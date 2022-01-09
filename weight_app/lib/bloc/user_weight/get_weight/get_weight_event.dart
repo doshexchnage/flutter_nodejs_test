@@ -6,3 +6,11 @@ abstract class GetWeightEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class GetUserWeightData extends GetWeightEvent {
+  const GetUserWeightData({required this.userID});
+  final int userID;
+
+  @override
+  List<Object> get props => [userID];
+}

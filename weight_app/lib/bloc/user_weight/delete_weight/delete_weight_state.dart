@@ -8,3 +8,11 @@ abstract class DeleteWeightState extends Equatable {
 }
 
 class DeleteWeightInitial extends DeleteWeightState {}
+
+
+class UserWeightResponseState extends DeleteWeightState {
+  final String message;
+  final bool success;
+
+  const UserWeightResponseState(this.message, this.success) : super();
+}

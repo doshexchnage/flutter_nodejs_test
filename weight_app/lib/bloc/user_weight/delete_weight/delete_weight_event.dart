@@ -6,3 +6,12 @@ abstract class DeleteWeightEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+
+class DeleteWeight extends DeleteWeightEvent {
+  const DeleteWeight({required this.userID});
+  final int userID;
+
+  @override
+  List<Object> get props => [userID];
+}
