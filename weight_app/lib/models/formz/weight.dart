@@ -12,15 +12,13 @@ class Weight extends FormzInput<String, WeightValidationError> {
 
   @override
   WeightValidationError? validator(String value) {
+    if (double.tryParse(value) != null) {
+      double amount = double.parse(double.parse(value).toStringAsFixed(2));
+      if (amount > 5.00 && amount < 1000.00) {
+        return null;
+      }
+    }
 
-        if (double.tryParse(value) != null) {
-          double weight = double.parse(double.parse(value).toStringAsFixed(2));
-          if (weight > 0.0){
-            return null;
-          }
-        }
-
-      return WeightValidationError.invalid;
+    return WeightValidationError.invalid;
   }
 }
-

@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:weight_app/bloc/user_weight/add%20weight/add_weight_bloc.dart';
@@ -22,23 +24,27 @@ class _AddWeightFormState extends State<AddWeightForm> {
     _weightFocusNode.addListener(() {
       if (!_weightFocusNode.hasFocus) {
         context.read<AddWeightBloc>().add(WeightUnfocused());
-        // FocusScope.of(context).requestFocus(_ageFocusNode);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-            flex: 3,
-            child: WeightInput(key: widget.key, focusNode: _weightFocusNode)),
-        Expanded(flex: 1, child: SubmitButton(key: widget.key))
-      ],
-    );
+    return BlocBuilder<AddWeightBloc, AddWeightState>(
+        builder: (context, state) {
+      if (state is SubmitWeightState) {
+        return Center(child: CircularProgressIndicator());
+      }
+
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(flex: 3, child: WeightInput(focusNode: _weightFocusNode)),
+          Expanded(flex: 1, child: SubmitButton(key: widget.key))
+        ],
+      );
+    });
   }
 }
 
@@ -52,25 +58,33 @@ class WeightInput extends StatelessWidget {
     return BlocBuilder<AddWeightBloc, AddWeightState>(
       builder: (context, state) {
         return TextFormField(
-          initialValue: state.weight.value,
+          initialValue: null,
           focusNode: focusNode,
           decoration: InputDecoration(
             labelStyle: TextStyle(color: Colors.white, fontSize: 20),
             helperStyle: TextStyle(color: Colors.white),
             icon: const Icon(Icons.money, color: Colors.white),
             helperText: '''Weight To The Nearest Decimal e.g 7.2''',
-            helperMaxLines: 2,
-            labelText: 'Amount',
-            errorMaxLines: 2,
+            helperMaxLines: 1,
+            labelText: 'Weight',
+            errorMaxLines: 1,
             errorText: state.weight.invalid
                 ? '''Weigh Must Be Greater Than 0.0'''
                 : null,
           ),
           onChanged: (value) {
+            double weight = 0.0;
+            if (double.tryParse(value) != null) {
+              weight = double.parse(value);
+            }
+            print(weight);
             context.read<AddWeightBloc>().add(WeightChanged(weight: value));
           },
           keyboardType: TextInputType.numberWithOptions(decimal: true),
-          textInputAction: TextInputAction.send,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
+          // textInputAction: TextInputAction.done,
         );
       },
     );

@@ -1,10 +1,8 @@
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:formz/formz.dart';
-import 'package:meta/meta.dart';
 import 'package:weight_app/models/formz/name.dart';
 import 'package:weight_app/models/formz/password.dart';
 import 'package:weight_app/models/user_model.dart';
@@ -22,13 +20,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<FormSubmitted>(_onFormSubmiited);
   }
 
+
   void _onUserNameChanged(UserNameChanged event, Emitter<LoginState> emit) {
-    final email = Name.dirty(event.userName);
+    final userName = Name.dirty(event.userName);
     emit(state.copyWith(
-      userName: email.valid ? email : Name.pure(event.userName),
+      userName: userName.valid ? userName : Name.pure(event.userName),
       password: state.password,
       togglePassword: state.togglePassword,
-      status: Formz.validate([email, state.password]),
+      status: Formz.validate([userName, state.password]),
     ));
   }
 
@@ -90,7 +89,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         print(password.value);
       }
       emit(LoginInitial());
-
+  
       // Connecting with login repository
       // try {
       //   var apiResponse = await repo.userLogin(email.value, password.value);
