@@ -15,7 +15,7 @@ class AddWeightState extends Equatable {
   }
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [weight, status];
 }
 
 class AddWeightInitialState extends AddWeightState {}

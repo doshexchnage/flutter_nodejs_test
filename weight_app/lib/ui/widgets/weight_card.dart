@@ -32,7 +32,7 @@ class WeightCard extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: primaryColor,
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold),
               ),
             )),
@@ -52,8 +52,10 @@ class WeightCard extends StatelessWidget {
                           child: Center(
                             child: Text(
                               'Value: ${data.value.toString()}',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             ),
                           )),
@@ -80,7 +82,7 @@ class WeightCard extends StatelessWidget {
                   Icons.delete,
                 ),
                 iconSize: 50,
-                color: Colors.green,
+                color: Colors.white,
                 splashColor: Colors.purple,
                 onPressed: () {},
               ),

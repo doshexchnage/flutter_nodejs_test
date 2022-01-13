@@ -14,8 +14,7 @@ class Weight extends FormzInput<String, WeightValidationError> {
   WeightValidationError? validator(String value) {
     if (double.tryParse(value) != null) {
       double weight = double.parse(double.parse(value).toStringAsFixed(2));
-      print("Validator: $weight");
-      if (weight > 0.00 && weight < 1000.00) {
+      if (weight > 0.00) {
         return null;
       }
     }

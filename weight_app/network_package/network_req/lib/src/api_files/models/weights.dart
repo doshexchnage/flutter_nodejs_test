@@ -1,7 +1,7 @@
 class WeightResponseModel {
-  WeightResponseModel(this.responseCode, this.msg);
+  WeightResponseModel(this.success, this.msg);
 
-  int responseCode;
+  bool success;
   String msg;
 }
 

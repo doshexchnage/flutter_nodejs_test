@@ -66,7 +66,6 @@ app.post('/login', function(req, res){
 
     if (username && password){
         connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(err, results){
-            console.log(results);
             if (results.length > 0){
                 // console.log(results)
                 res.status(201)
@@ -109,7 +108,7 @@ app.post('/user/add_weight', function(req, res){
         });
     } else {
         res.status(401)
-        res.send("Please enter user ID and weight!");
+        res.send("User doesn't exist! ");
         res.end();
     };
 });

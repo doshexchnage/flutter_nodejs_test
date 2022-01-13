@@ -18,9 +18,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: RegistrationPage(title: 'User Registration', key: key),
+      // home: RegistrationPage(title: 'User Registration', key: key),
       // home: LoginPage(title: 'User Login'),
-      // home: HomePage(title: 'Weight App'),
+      home: HomePage(title: 'Weight App'),
     );
   }
 }

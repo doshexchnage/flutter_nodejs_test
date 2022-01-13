@@ -1,11 +1,8 @@
-
 import 'package:network_req/src/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'models/weights.dart';
-
-
 
 class WeightAPI {
   Future<WeightResponseModel> addWieghtRequestFunction(
@@ -22,11 +19,11 @@ class WeightAPI {
         .catchError((e) => throw ('$e'));
 
     if (response.statusCode == 201) {
-      return WeightResponseModel(response.statusCode, response.body);
+      return WeightResponseModel(true, response.body);
     } else if (response.statusCode == 401) {
-      return WeightResponseModel(response.statusCode, response.body);
+      return WeightResponseModel(false, response.body);
     } else {
-      throw ('Invalid Request');
+      return WeightResponseModel(false, 'Invalid Request');
     }
   }
 
@@ -63,11 +60,11 @@ class WeightAPI {
         .catchError((e) => throw ('$e'));
 
     if (response.statusCode == 201) {
-      return WeightResponseModel(response.statusCode, response.body);
+      return WeightResponseModel(true, response.body);
     } else if (response.statusCode == 401) {
-      return WeightResponseModel(response.statusCode, response.body);
+      return WeightResponseModel(false, response.body);
     } else {
-      throw ('Invalid Request');
+      return WeightResponseModel(false, 'Invalid Request');
     }
   }
 }

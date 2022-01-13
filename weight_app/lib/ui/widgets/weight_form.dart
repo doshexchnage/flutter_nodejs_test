@@ -30,6 +30,7 @@ class _AddWeightFormState extends State<AddWeightForm> {
 
   @override
   void dispose() {
+    _weightFocusNode.dispose();
     super.dispose();
   }
 
@@ -41,85 +42,99 @@ class _AddWeightFormState extends State<AddWeightForm> {
         return Center(child: CircularProgressIndicator());
       }
 
+      if (state is AddWeightResponseState) {
+        return Center(
+            child: Text(
+          state.message,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              color: state.success ? Colors.white : Colors.red),
+        ));
+      }
+
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(flex: 3, child: WeightInput(focusNode: _weightFocusNode)),
-          Expanded(flex: 1, child: SubmitButton(key: widget.key))
+          Expanded(
+              flex: 3,
+              child: BlocBuilder<AddWeightBloc, AddWeightState>(
+                builder: (context, state) {
+                  return TextFormField(
+                    initialValue: state.weight.value,
+                    focusNode: _weightFocusNode,
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                      helperStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                      icon: const Icon(
+                        Icons.monitor_weight,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                      helperText:
+                          '''Weight To The Nearest Decimal e.g 7.2 (USE . for Decimals)''',
+                      helperMaxLines: 2,
+                      labelText: 'Weight',
+                      errorMaxLines: 2,
+                      errorStyle: TextStyle(
+                          color: Colors.red,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold),
+                      errorText: state.weight.invalid
+                          ? '''Weigh Must Be Greater Than 0.0'''
+                          : null,
+                    ),
+                    onChanged: (value) {
+                      context
+                          .read<AddWeightBloc>()
+                          .add(WeightChanged(weight: value));
+                    },
+                    keyboardType:
+                        TextInputType.numberWithOptions(decimal: true),
+                    // inputFormatters: <TextInputFormatter>[
+                    //   FilteringTextInputFormatter.digitsOnly
+                    // ],
+                    textInputAction: TextInputAction.done,
+                  );
+                },
+              )),
+          Expanded(
+              flex: 1,
+              child: BlocBuilder<AddWeightBloc, AddWeightState>(
+                buildWhen: (previous, current) =>
+                    previous.status != current.status,
+                builder: (context, state) {
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: bgColor,
+                    ),
+                    onPressed: state.status.isValidated
+                        ? () =>
+                            context.read<AddWeightBloc>().add(FormSubmitted())
+                        : null,
+                    // style: ElevatedButton.styleFrom(
+                    //   onSurface: Colors.blue,
+                    // ),
+                    child: const Text(
+                      'Add Weight',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  );
+                },
+              ))
         ],
       );
     });
-  }
-}
-
-class WeightInput extends StatelessWidget {
-  const WeightInput({Key? key, required this.focusNode}) : super(key: key);
-
-  final FocusNode focusNode;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<AddWeightBloc, AddWeightState>(
-      builder: (context, state) {
-        return TextFormField(
-          initialValue: state.weight.value,
-          focusNode: focusNode,
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Colors.white, fontSize: 20),
-            helperStyle: TextStyle(color: Colors.white),
-            icon: const Icon(Icons.money, color: Colors.white),
-            helperText: '''Weight To The Nearest Decimal e.g 7.2''',
-            helperMaxLines: 1,
-            labelText: 'Weight',
-            errorMaxLines: 1,
-            errorText: state.weight.invalid
-                ? '''Weigh Must Be Greater Than 0.0'''
-                : null,
-          ),
-          onChanged: (value) {
-            double weight = 0.0;
-            if (double.tryParse(value) != null) {
-              weight = double.parse(value);
-            }
-            print(weight);
-            context.read<AddWeightBloc>().add(WeightChanged(weight: value));
-          },
-          keyboardType: TextInputType.numberWithOptions(decimal: true),
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly
-          ],
-          // textInputAction: TextInputAction.done,
-        );
-      },
-    );
-  }
-}
-
-class SubmitButton extends StatelessWidget {
-  SubmitButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<AddWeightBloc, AddWeightState>(
-      buildWhen: (previous, current) => previous.status != current.status,
-      builder: (context, state) {
-        return ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: bgColor,
-          ),
-          onPressed: state.status.isValidated
-              ? () => context.read<AddWeightBloc>().add(FormSubmitted())
-              : null,
-          // style: ElevatedButton.styleFrom(
-          //   onSurface: Colors.blue,
-          // ),
-          child: const Text(
-            'Add Weight',
-            style: TextStyle(color: Colors.white),
-          ),
-        );
-      },
-    );
   }
 }
