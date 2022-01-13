@@ -29,6 +29,11 @@ class _AddWeightFormState extends State<AddWeightForm> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddWeightBloc, AddWeightState>(
         builder: (context, state) {
@@ -58,7 +63,7 @@ class WeightInput extends StatelessWidget {
     return BlocBuilder<AddWeightBloc, AddWeightState>(
       builder: (context, state) {
         return TextFormField(
-          initialValue: null,
+          initialValue: state.weight.value,
           focusNode: focusNode,
           decoration: InputDecoration(
             labelStyle: TextStyle(color: Colors.white, fontSize: 20),
@@ -92,7 +97,7 @@ class WeightInput extends StatelessWidget {
 }
 
 class SubmitButton extends StatelessWidget {
-  const SubmitButton({Key? key}) : super(key: key);
+  SubmitButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

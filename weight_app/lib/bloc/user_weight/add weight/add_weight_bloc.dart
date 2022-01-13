@@ -16,7 +16,9 @@ class AddWeightBloc extends Bloc<AddWeightEvent, AddWeightState> {
 
   void _onWeightChanged(WeightChanged event, Emitter<AddWeightState> emit) {
     final weight = Weight.dirty(event.weight);
-    print(state.weight);
+    if (kDebugMode) {
+      print("CHANGED ${state.weight}");
+    }
     emit(state.copyWith(
       weight: weight.valid ? weight : Weight.pure(event.weight),
       status: Formz.validate([weight]),
@@ -33,8 +35,7 @@ class AddWeightBloc extends Bloc<AddWeightEvent, AddWeightState> {
 
   Future<void> _onFormSubmitted(
       FormSubmitted event, Emitter<AddWeightState> emit) async {
-    final weight = Weight.dirty(state.weight.value);
-    String num = state.weight.value;
+    var weight = Weight.dirty(state.weight.value);
 
     emit(state.copyWith(
       weight: weight,
@@ -45,7 +46,7 @@ class AddWeightBloc extends Bloc<AddWeightEvent, AddWeightState> {
       emit(SubmitWeightState());
       await Future.delayed(Duration(milliseconds: 500));
       if (kDebugMode) {
-        print("BLoc value: ${num}");
+        print("BLoc value: ${weight.value}");
       }
       emit(AddWeightInitialState());
     }

@@ -1,8 +1,11 @@
+// ignore_for_file: await_only_futures, prefer_const_constructors
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
+import 'package:network_req/network_req.dart';
 import 'package:weight_app/models/formz/age.dart';
 import 'package:weight_app/models/formz/confirm_password.dart';
 import 'package:weight_app/models/formz/name.dart';
@@ -24,7 +27,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<TogglePassword>(_onTogglePassword);
     on<ToggleConfirmPassword>(_onToggleConfirmPassword);
     on<FormSubmitted>(_onFormSubmitted);
+
   }
+
+  final UserRegistrationAPI repo = UserRegistrationAPI();
 
   void _onUserNameChanged(
       UserNameChanged event, Emitter<RegistrationState> emit) {
@@ -210,12 +216,22 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     ));
 
     if (state.status.isValidated) {
-      if (kDebugMode) {
-        print(userName.value);
-        print(age.value);
-        print(password.value);
-        print(confirmPassword.value);
+      emit(SubmittingRegistrationState());
+      var sendReq = await repo.requestFunction(
+          userName.value, password.value, int.parse(age.value));
+
+      if (sendReq.responseCode == 201) {
+        emit(RegistrationStateResponse(
+            'Success', sendReq.msg + " Please head to login page", true));
+      } else {
+        emit(RegistrationStateResponse('Failure', sendReq.msg, true));
       }
+      // if (kDebugMode) {
+      //   print(userName.value);
+      //   print(age.value);
+      //   print(password.value);
+      //   print(confirmPassword.value);
+      // }
     }
   }
 }

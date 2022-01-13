@@ -2,6 +2,7 @@
     package="com.example.weight_app">
    <application
         android:label="weight_app"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

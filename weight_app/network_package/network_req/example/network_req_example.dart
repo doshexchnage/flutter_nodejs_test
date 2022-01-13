@@ -5,6 +5,18 @@ import 'dart:convert';
 
 void main() async {
 
+  //   // Testing Registration API Model
+  // var apiModel =
+  //     await UserRegistrationAPI().requestFunction('MeAlpha', 'Password1#', 99);
+  // print(apiModel.responseCode);
+  // print(apiModel.msg);
+
+  // Testing Login API Model
+  var apiModel2 = await UserLoginAPI().requestFunction("MeAlpha", "Password1#");
+  print(apiModel2.response.responseCode);
+  print(apiModel2.response.msg);
+  print(apiModel2.data);
+}
   // // Testing Weight API Model
   // var apiModel = WeightAPI();
 
@@ -44,17 +56,4 @@ void main() async {
   //   print(e);
   // }
 
-  // // Testing Registration API Model
-  // var awesome = Awesome();
-  // print('awesome: ${awesome.isAwesome}');
-  // var apiModel =
-  //     await UserRegistrationAPI().requestFunction('Judus', 'Password1#', 99);
-  // print(apiModel.responseCode);
-  // print(apiModel.msg);
 
-  // // Testing Login API Model
-  // var apiModel = await UserLoginAPI().requestFunction("Judus", "Password1#");
-  // print(apiModel.response.responseCode);
-  // print(apiModel.response.msg);
-  // print(apiModel.data);
-}

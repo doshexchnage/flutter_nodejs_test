@@ -1,1 +1,1 @@
-String authUrl = 'http://localhost:3000/';
+String authUrl = 'http://10.0.2.2:3000/';

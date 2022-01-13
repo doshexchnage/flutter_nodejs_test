@@ -66,6 +66,7 @@ app.post('/login', function(req, res){
 
     if (username && password){
         connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(err, results){
+            console.log(results);
             if (results.length > 0){
                 // console.log(results)
                 res.status(201)

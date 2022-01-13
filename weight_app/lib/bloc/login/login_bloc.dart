@@ -1,8 +1,10 @@
+// ignore_for_file: prefer_const_constructors
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:formz/formz.dart';
+import 'package:network_req/network_req.dart';
 import 'package:weight_app/models/formz/name.dart';
 import 'package:weight_app/models/formz/password.dart';
 import 'package:weight_app/models/user_model.dart';
@@ -20,6 +22,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<FormSubmitted>(_onFormSubmiited);
   }
 
+  final UserLoginAPI repo = UserLoginAPI();
 
   void _onUserNameChanged(UserNameChanged event, Emitter<LoginState> emit) {
     final userName = Name.dirty(event.userName);
@@ -84,35 +87,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (state.status.isValidated) {
       // Display progress indicator
       emit(SubmittingLogin());
-      if (kDebugMode) {
-        print(userName.value);
-        print(password.value);
-      }
-      emit(LoginInitial());
-  
-      // Connecting with login repository
-      // try {
-      //   var apiResponse = await repo.userLogin(email.value, password.value);
 
-      //   if (apiResponse.responseCode == 201) {
-      //     if (apiResponse.userInfo != null) {
-      //       emit(LoginSuccess(apiResponse.userInfo!));
-      //     } else {
-      //       await Future.delayed(const Duration(seconds: 2));
-      //       emit(const LoginResponse("Detail", "Please Try Again", true));
-      //       await Future.delayed(const Duration(seconds: 3));
-      //       emit(InitialLogin());
-      //     }
-      //   } else {
-      //     emit(LoginResponse("Detail", apiResponse.msg.toString(), true));
-      //     await Future.delayed(const Duration(seconds: 3));
-      //     emit(InitialLogin());
-      //   }
-      // } catch (e) {
-      //   emit(LoginResponse("Detail", e.toString(), true));
-      //   await Future.delayed(const Duration(seconds: 3));
-      //   emit(InitialLogin());
-      // }
+      try {
+        var sendReq =
+            await repo.requestFunction(userName.value, password.value);
+        if (sendReq.response.responseCode == 201) {
+          emit(LoginSuccess(UserLogin.fromJson(sendReq.data)));
+        } else if (sendReq.response.responseCode == 401) {
+          emit(LoginResponse("Invalid Login", sendReq.response.msg, true));
+          await Future.delayed(Duration(seconds: 5));
+          emit(LoginInitial());
+        }
+      } catch (e) {
+        emit(LoginResponse("Invalid Login", e.toString(), true));
+        await Future.delayed(Duration(seconds: 5));
+        emit(LoginInitial());
+      }
     }
   }
 }

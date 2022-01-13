@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:weight_app/bloc/login/login_bloc.dart';
 import 'package:weight_app/models/constants.dart';
+import 'package:weight_app/ui/home.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key, required this.title}) : super(key: key);
@@ -26,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
             borderRadius: BorderRadius.circular(20.0),
           ),
           elevation: 0,
-          backgroundColor: Color(0xFF212332),
+          backgroundColor: bgColor,
           // title: new Text(title,
           //     textAlign: TextAlign.center,
           //     style: TextStyle(
@@ -34,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
           //     )),
           content: Text(body,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white)),
+              style: TextStyle(color: Colors.white, fontSize: 24)),
           actions: closeDia
               ? <Widget>[
                   // usually buttons at the bottom of the dialog
@@ -75,13 +76,11 @@ class _LoginPageState extends State<LoginPage> {
                         state.title, state.message, state.showCloseDialog);
                   }
                   if (state is LoginSuccess) {
-                    // Navigator.pushReplacement(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (BuildContext context) => BlocProvider(
-                    //             create: (context) =>
-                    //                 NavigationBloc(userInfo: ''),
-                    //             child: Home(userinfo: state.userInfo))));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                HomePage(title: 'Weight App')));
                   }
                 },
                 child: LoginForm(),
@@ -132,131 +131,141 @@ class _LoginFormState extends State<LoginForm> {
       padding: EdgeInsets.symmetric(horizontal: 20),
       margin: EdgeInsets.symmetric(vertical: 75),
       height: 320,
-      child: Column(
-        children: [
-          // Username Input
-          // Password Input
-          // Submit Button
-          Expanded(
-              flex: 2,
-              child: Container(
-                  alignment: Alignment.center,
-                  child: BlocBuilder<LoginBloc, LoginState>(
-                    builder: (context, state) {
-                      return TextFormField(
-                        initialValue: state.userName.value,
-                        focusNode: _userNameFocusNode,
-                        cursorColor: Colors.white,
-                        style: TextStyle(color: Colors.white, fontSize: 24),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(12),
-                          isDense: true,
-                          labelStyle:
-                              TextStyle(color: Colors.white, fontSize: 20),
-                          helperStyle: TextStyle(color: Colors.white),
-                          icon: const Icon(Icons.account_circle,
-                              size: 30, color: Colors.white),
-                          helperText: state.userName.valid
-                              ? null
-                              : '''A complete, valid first name e.g John''',
-                          helperMaxLines: 2,
-                          labelText: 'First Name',
-                          errorMaxLines: 2,
-                          errorText: state.userName.invalid
-                              ? '''Username must be 3 or more charactors without spaces'''
-                              : null,
-                        ),
-                        onChanged: (value) {
-                          context
-                              .read<LoginBloc>()
-                              .add(UserNameChanged(userName: value));
-                        },
-                        keyboardType: TextInputType.text,
-                        //textInputAction: TextInputAction.next,
-                      );
-                    },
-                  ))),
-          Expanded(
-              flex: 2,
-              child: Container(
-                  alignment: Alignment.center,
-                  child: BlocBuilder<LoginBloc, LoginState>(
-                    builder: (context, state) {
-                      return TextFormField(
-                        cursorColor: Colors.white,
-                        initialValue: state.password.value,
-                        focusNode: _passwordFocusNode,
-                        style: TextStyle(color: Colors.white, fontSize: 24),
-                        decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.all(12),
-                            isDense: true,
-                            labelStyle:
-                                TextStyle(color: Colors.white, fontSize: 20),
-                            helperStyle: TextStyle(color: Colors.white),
-                            icon: const Icon(
-                              Icons.lock,
-                              color: Colors.white,
-                              size: 30,
+      child: BlocBuilder<LoginBloc, LoginState>(
+        builder: (context, state) {
+          if (state is SubmittingLogin) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return Column(
+            children: [
+              // Username Input
+              // Password Input
+              // Submit Button
+              Expanded(
+                  flex: 2,
+                  child: Container(
+                      alignment: Alignment.center,
+                      child: BlocBuilder<LoginBloc, LoginState>(
+                        builder: (context, state) {
+                          return TextFormField(
+                            initialValue: state.userName.value,
+                            focusNode: _userNameFocusNode,
+                            cursorColor: Colors.white,
+                            style: TextStyle(color: Colors.white, fontSize: 24),
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(12),
+                              isDense: true,
+                              labelStyle:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                              helperStyle: TextStyle(color: Colors.white),
+                              icon: const Icon(Icons.account_circle,
+                                  size: 30, color: Colors.white),
+                              helperText: state.userName.valid
+                                  ? null
+                                  : '''A complete, valid first name e.g John''',
+                              helperMaxLines: 2,
+                              labelText: 'First Name',
+                              errorMaxLines: 2,
+                              errorText: state.userName.invalid
+                                  ? '''Username must be 3 or more charactors without spaces'''
+                                  : null,
                             ),
-                            helperText: state.password.valid
-                                ? null
-                                : '''Password must contain at least eight characters, at least one number and both lower and uppercase letters and special characters''',
-                            helperMaxLines: 3,
-                            labelText: 'Password',
-                            errorMaxLines: 2,
-                            errorText: state.password.invalid
-                                ? '''Password must be at least 8 characters and contain at least one letter and number'''
-                                : null,
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                // Based on passwordVisible state choose the icon
-                                state.togglePassword
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                context.read<LoginBloc>().add(TogglePassword());
-                              },
-                            )),
-                        obscureText: state.togglePassword,
-                        onChanged: (value) {
-                          context
-                              .read<LoginBloc>()
-                              .add(PasswordChanged(password: value));
+                            onChanged: (value) {
+                              context
+                                  .read<LoginBloc>()
+                                  .add(UserNameChanged(userName: value));
+                            },
+                            keyboardType: TextInputType.text,
+                            //textInputAction: TextInputAction.next,
+                          );
                         },
-                        textInputAction: TextInputAction.done,
-                      );
-                    },
-                  ))),
-          Expanded(
-              flex: 1,
-              child: Container(
-                  width: 150,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: BlocBuilder<LoginBloc, LoginState>(
-                    buildWhen: (previous, current) =>
-                        previous.status != current.status,
-                    builder: (context, state) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: bgColor,
-                        ),
-                        onPressed: state.status.isValidated
-                            ? () =>
-                                context.read<LoginBloc>().add(FormSubmitted())
-                            : null,
-                        // style: ElevatedButton.styleFrom(
-                        //   onSurface: Colors.blue,
-                        // ),
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      );
-                    },
-                  )))
-        ],
+                      ))),
+              Expanded(
+                  flex: 2,
+                  child: Container(
+                      alignment: Alignment.center,
+                      child: BlocBuilder<LoginBloc, LoginState>(
+                        builder: (context, state) {
+                          return TextFormField(
+                            cursorColor: Colors.white,
+                            initialValue: state.password.value,
+                            focusNode: _passwordFocusNode,
+                            style: TextStyle(color: Colors.white, fontSize: 24),
+                            decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.all(12),
+                                isDense: true,
+                                labelStyle: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                                helperStyle: TextStyle(color: Colors.white),
+                                icon: const Icon(
+                                  Icons.lock,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                                helperText: state.password.valid
+                                    ? null
+                                    : '''Password must contain at least eight characters, at least one number and both lower and uppercase letters and special characters''',
+                                helperMaxLines: 3,
+                                labelText: 'Password',
+                                errorMaxLines: 2,
+                                errorText: state.password.invalid
+                                    ? '''Password must be at least 8 characters and contain at least one letter and number'''
+                                    : null,
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    // Based on passwordVisible state choose the icon
+                                    state.togglePassword
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    context
+                                        .read<LoginBloc>()
+                                        .add(TogglePassword());
+                                  },
+                                )),
+                            obscureText: state.togglePassword,
+                            onChanged: (value) {
+                              context
+                                  .read<LoginBloc>()
+                                  .add(PasswordChanged(password: value));
+                            },
+                            textInputAction: TextInputAction.done,
+                          );
+                        },
+                      ))),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                      width: 150,
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: BlocBuilder<LoginBloc, LoginState>(
+                        buildWhen: (previous, current) =>
+                            previous.status != current.status,
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: bgColor,
+                            ),
+                            onPressed: state.status.isValidated
+                                ? () => context
+                                    .read<LoginBloc>()
+                                    .add(FormSubmitted())
+                                : null,
+                            // style: ElevatedButton.styleFrom(
+                            //   onSurface: Colors.blue,
+                            // ),
+                            child: const Text(
+                              'Login',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          );
+                        },
+                      )))
+            ],
+          );
+        },
       ),
     );
   }
