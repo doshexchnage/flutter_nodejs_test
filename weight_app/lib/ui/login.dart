@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors, prefer_function_declarations_over_variables
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:weight_app/bloc/login/login_bloc.dart';
 import 'package:weight_app/models/constants.dart';
 import 'package:weight_app/ui/home.dart';
+import 'package:weight_app/ui/registration.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key, required this.title}) : super(key: key);
@@ -132,7 +134,7 @@ class _LoginFormState extends State<LoginForm> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
       margin: EdgeInsets.symmetric(vertical: 75),
-      height: 320,
+      height: 350,
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
           if (state is SubmittingLogin) {
@@ -144,7 +146,7 @@ class _LoginFormState extends State<LoginForm> {
               // Password Input
               // Submit Button
               Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Container(
                       alignment: Alignment.center,
                       child: BlocBuilder<LoginBloc, LoginState>(
@@ -183,7 +185,7 @@ class _LoginFormState extends State<LoginForm> {
                         },
                       ))),
               Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Container(
                       alignment: Alignment.center,
                       child: BlocBuilder<LoginBloc, LoginState>(
@@ -238,7 +240,7 @@ class _LoginFormState extends State<LoginForm> {
                         },
                       ))),
               Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Container(
                       width: 150,
                       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -260,11 +262,40 @@ class _LoginFormState extends State<LoginForm> {
                             // ),
                             child: const Text(
                               'Login',
-                              style: TextStyle(color: Colors.white),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
                             ),
                           );
                         },
-                      )))
+                      ))),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: RichText(
+                          text: TextSpan(
+                        text: 'Not Registered?',
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.white),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: ' Sign-Up',
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              RegistrationPage(
+                                                  title: 'User Registration')));
+                                },
+                              style: const TextStyle(
+                                color: Colors.black,
+                              )),
+                        ],
+                      ))))
             ],
           );
         },

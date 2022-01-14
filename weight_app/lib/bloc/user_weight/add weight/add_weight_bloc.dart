@@ -50,12 +50,12 @@ class AddWeightBloc extends Bloc<AddWeightEvent, AddWeightState> {
         var sendReq = await repo.addWieghtRequestFunction(userInfo.userID!,
             double.parse(double.parse(weight.value).toStringAsFixed(2)));
         emit(AddWeightResponseState(sendReq.msg, sendReq.success));
-        await Future.delayed(const Duration(seconds: 8));
+        await Future.delayed(const Duration(seconds: 4));
 
         emit(AddWeightInitialState());
       } catch (e) {
         emit(AddWeightResponseState(e.toString(), false));
-        await Future.delayed(const Duration(seconds: 8));
+        await Future.delayed(const Duration(seconds: 4));
 
         emit(AddWeightInitialState());
       }

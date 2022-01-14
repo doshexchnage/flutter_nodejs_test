@@ -6,6 +6,7 @@ import 'package:weight_app/bloc/user_weight/add%20weight/add_weight_bloc.dart';
 import 'package:weight_app/bloc/user_weight/get_weight/get_weight_bloc.dart';
 import 'package:weight_app/models/constants.dart';
 import 'package:weight_app/models/user_model.dart';
+import 'package:weight_app/ui/login.dart';
 import 'package:weight_app/ui/widgets/weight_card.dart';
 import 'package:weight_app/ui/widgets/weight_form.dart';
 
@@ -32,7 +33,126 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: bgColor,
+        drawer: Container(
+          width: MediaQuery.of(context).size.width * 0.75,
+          color: secondaryColor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 25),
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  color: compTwo,
+                  child: Row(
+                    children: [
+                      Expanded(
+                          flex: 3,
+                          child: Text(
+                            'ClOSE',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold),
+                          )),
+                      Expanded(
+                          child: IconButton(
+                        icon: Icon(
+                          Icons.close_fullscreen,
+                        ),
+                        iconSize: 50,
+                        color: Colors.white,
+                        splashColor: Colors.purple,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ))
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 4,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Text(
+                        "Username: \n   ${widget.userInfo.userName!}",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        "User ID: ${widget.userInfo.userID!}",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        "Age: ${widget.userInfo.age!}",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  color: compTwo,
+                  child: Row(
+                    children: [
+                      Expanded(
+                          flex: 3,
+                          child: Text(
+                            'LOGOUT',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold),
+                          )),
+                      Expanded(
+                          child: IconButton(
+                        icon: Icon(
+                          Icons.logout_rounded,
+                        ),
+                        iconSize: 50,
+                        color: Colors.white,
+                        splashColor: Colors.purple,
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      LoginPage(title: 'User Login')));
+                        },
+                      ))
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
         appBar: AppBar(
+          centerTitle: true,
           backgroundColor: secondaryColor,
           title: Text(widget.title),
         ),
@@ -64,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                               fontSize: 24,
                               color: state.success ? Colors.white : Colors.red),
                         ),
-                        duration: Duration(milliseconds: 300),
+                        duration: Duration(milliseconds: 600),
                       ));
                     }
                   },

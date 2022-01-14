@@ -26,7 +26,7 @@ class _ViewWeightsState extends State<ViewWeights> {
   }
 
   setUpTimedFetch() {
-    timer = Timer.periodic(Duration(seconds: 5), (Timer t) {
+    timer = Timer.periodic(Duration(seconds: 3), (Timer t) {
       if (mounted) {
         context.read<GetWeightBloc>().add(GetUserWeightData());
       }
@@ -41,18 +41,6 @@ class _ViewWeightsState extends State<ViewWeights> {
         if (state is GetWeightLoading) {
           return Center(child: CircularProgressIndicator());
         }
-
-        // if (state is UserWeightResponseState) {
-        //   return Center(
-        //       child: Text(
-        //     state.message,
-        //     textAlign: TextAlign.center,
-        //     style: TextStyle(
-        //         fontWeight: FontWeight.bold,
-        //         fontSize: 24,
-        //         color: state.success ? Colors.white : Colors.red),
-        //   ));
-        // }
 
         return StreamBuilder<List<UserWeight>>(
             stream: context.read<GetWeightBloc>().data,

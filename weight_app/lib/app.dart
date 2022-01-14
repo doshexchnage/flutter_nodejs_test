@@ -20,12 +20,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: RegistrationPage(title: 'User Registration', key: key),
-      // home: LoginPage(title: 'User Login'),
-      home: HomePage(
-        title: 'Weight App',
-        userInfo:
-            UserLogin.fromJson({"userId": 6, "username": "MeAlpha", "age": 99}),
-      ),
+      home: LoginPage(title: 'User Login'),
+      // home: HomePage(
+      //   title: 'Weight App',
+      //   userInfo:
+      //       UserLogin.fromJson({"userId": 6, "username": "MeAlpha", "age": 99}),
+      // ),
     );
   }
 }

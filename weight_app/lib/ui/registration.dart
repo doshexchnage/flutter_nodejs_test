@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_function_declarations_over_variables, prefer_const_constructors_in_immutables
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:formz/formz.dart';
 import 'package:weight_app/bloc/registration/registration_bloc.dart';
 import 'package:weight_app/models/constants.dart';
 import 'package:weight_app/ui/home.dart';
+import 'package:weight_app/ui/login.dart';
 
 class RegistrationPage extends StatefulWidget {
   RegistrationPage({Key? key, required this.title}) : super(key: key);
@@ -76,7 +78,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     _showDialog(
                         state.title, state.message, state.showCloseDialog);
                   }
-
                 },
                 child: RegistrationForm(),
               ),
@@ -136,15 +137,41 @@ class _RegistrationFormState extends State<RegistrationForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 10),
         margin: EdgeInsets.symmetric(vertical: 25),
-        height: 560,
+        height: 600,
         child: BlocBuilder<RegistrationBloc, RegistrationState>(
             builder: (context, state) {
           if (state is SubmittingRegistrationState) {
             return Center(child: CircularProgressIndicator());
           }
           return Column(children: [
+            Expanded(
+                flex: 1,
+                child: Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    child: RichText(
+                        text: TextSpan(
+                      text: 'Already Registered?',
+                      style: const TextStyle(fontSize: 18, color: Colors.white),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: ' Sign-In',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            LoginPage(title: 'User Login')));
+                              },
+                            style: const TextStyle(
+                              color: Colors.black,
+                            )),
+                      ],
+                    )))),
             Expanded(
                 flex: 2,
                 child: Container(

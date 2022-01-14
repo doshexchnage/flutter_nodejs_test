@@ -118,12 +118,7 @@ class _AddWeightFormState extends State<AddWeightForm> {
                     ),
                     onPressed: state.status.isValidated
                         ? () {
-                            if (kDebugMode) {
-                              print(context
-                                  .read<AddWeightBloc>()
-                                  .userInfo
-                                  .userID!);
-                            }
+               
                             context.read<AddWeightBloc>().add(FormSubmitted());
                           }
                         : null,

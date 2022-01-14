@@ -222,17 +222,11 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       if (sendReq.responseCode == 201) {
         emit(RegistrationStateResponse(
             'Success',
-            sendReq.msg + " Please Head To Login Page, Use Details Submitted",
+            sendReq.msg + " Please Head To Login Page, Use Submitted Details",
             true));
       } else {
         emit(RegistrationStateResponse('Failure', sendReq.msg, true));
       }
-      // if (kDebugMode) {
-      //   print(userName.value);
-      //   print(age.value);
-      //   print(password.value);
-      //   print(confirmPassword.value);
-      // }
     }
   }
 }
