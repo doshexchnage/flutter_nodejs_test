@@ -1,0 +1,22 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "Wieght Application",
+        	"description": "Interview Applicatiob test",
+        	"contact": {
+            		"email": "skhendle@gmail.com"
+        	}
+	},
+    "host": "localhost:3000",
+	"basePath": "/api/v1/users",
+	"tags": [
+		{
+			"name": "Users",
+			"description": "User actions"
+		}
+	],
+	"schemes": ["http", "https"],
+	"consumes": ["application/json"],
+	"produces": ["application/json"]
+}
