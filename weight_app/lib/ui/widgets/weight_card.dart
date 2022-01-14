@@ -10,7 +10,7 @@ import 'package:weight_app/models/constants.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ViewWeights extends StatefulWidget {
-  ViewWeights({Key? key}) : super(key: key);
+  const ViewWeights({Key? key}) : super(key: key);
 
   @override
   _ViewWeightsState createState() => _ViewWeightsState();
@@ -19,11 +19,16 @@ class ViewWeights extends StatefulWidget {
 class _ViewWeightsState extends State<ViewWeights> {
   late Timer timer;
   final ScrollController _controllerOne = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    setUpTimedFetch();
+  }
 
   setUpTimedFetch() {
     timer = Timer.periodic(Duration(seconds: 5), (Timer t) {
       if (mounted) {
-        context.read<GetWeightBloc>().add(GetUserWeightData(userID: 6));
+        context.read<GetWeightBloc>().add(GetUserWeightData());
       }
     });
   }
@@ -33,12 +38,21 @@ class _ViewWeightsState extends State<ViewWeights> {
     return BlocBuilder<GetWeightBloc, GetWeightState>(
       bloc: context.read<GetWeightBloc>(),
       builder: (context, state) {
-        if (state is GetWeightInitial) {
-          context.read<GetWeightBloc>().add(GetUserWeightData(userID: 6));
-        }
         if (state is GetWeightLoading) {
           return Center(child: CircularProgressIndicator());
         }
+
+        // if (state is UserWeightResponseState) {
+        //   return Center(
+        //       child: Text(
+        //     state.message,
+        //     textAlign: TextAlign.center,
+        //     style: TextStyle(
+        //         fontWeight: FontWeight.bold,
+        //         fontSize: 24,
+        //         color: state.success ? Colors.white : Colors.red),
+        //   ));
+        // }
 
         return StreamBuilder<List<UserWeight>>(
             stream: context.read<GetWeightBloc>().data,
@@ -47,7 +61,14 @@ class _ViewWeightsState extends State<ViewWeights> {
                 return ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
-                      return WeightCard(data: snapshot.data![index]);
+                      return WeightCard(
+                        data: snapshot.data![index],
+                        onTap: () {
+                          context.read<GetWeightBloc>().add(
+                              DeleteUserWeightData(
+                                  weightId: snapshot.data![index].id!));
+                        },
+                      );
                     });
               } else {
                 return Center(child: CircularProgressIndicator());
@@ -59,8 +80,10 @@ class _ViewWeightsState extends State<ViewWeights> {
 }
 
 class WeightCard extends StatelessWidget {
-  const WeightCard({Key? key, required this.data}) : super(key: key);
+  const WeightCard({Key? key, required this.data, required this.onTap})
+      : super(key: key);
   final UserWeight data;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +160,7 @@ class WeightCard extends StatelessWidget {
                 iconSize: 50,
                 color: Colors.white,
                 splashColor: Colors.purple,
-                onPressed: () {},
+                onPressed: onTap,
               ),
             )),
       ]),

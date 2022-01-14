@@ -52,7 +52,24 @@ class _HomePageState extends State<HomePage> {
               height: MediaQuery.of(context).size.height - 310,
               child: BlocProvider(
                 create: (context) => GetWeightBloc(userInfo: widget.userInfo),
-                child: ViewWeights(),
+                child: BlocListener<GetWeightBloc, GetWeightState>(
+                  listener: (context, state) {
+                    if (state is UserWeightResponseState) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                          state.message,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                              color: state.success ? Colors.white : Colors.red),
+                        ),
+                        duration: Duration(milliseconds: 300),
+                      ));
+                    }
+                  },
+                  child: ViewWeights(),
+                ),
               ),
             ),
           ],

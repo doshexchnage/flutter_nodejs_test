@@ -8,19 +8,15 @@ abstract class GetWeightEvent extends Equatable {
 }
 
 class GetUserWeightData extends GetWeightEvent {
-  const GetUserWeightData({required this.userID});
-  final int userID;
 
-  @override
-  List<Object> get props => [userID];
 }
 
 
 
 class DeleteUserWeightData extends GetWeightEvent {
-  const DeleteUserWeightData({required this.userID});
-  final int userID;
+  const DeleteUserWeightData({required this.weightId});
+  final int weightId;
 
   @override
-  List<Object> get props => [userID];
+  List<Object> get props => [weightId];
 }
