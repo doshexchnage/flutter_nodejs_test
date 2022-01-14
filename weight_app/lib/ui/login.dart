@@ -79,8 +79,10 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                HomePage(title: 'Weight App')));
+                            builder: (BuildContext context) => HomePage(
+                                  title: 'Weight App',
+                                  userInfo: state.userInfo,
+                                )));
                   }
                 },
                 child: LoginForm(),

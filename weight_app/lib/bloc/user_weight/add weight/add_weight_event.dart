@@ -16,7 +16,6 @@ class WeightChanged extends AddWeightEvent {
   List<Object> get props => [weight];
 }
 
-
 class WeightUnfocused extends AddWeightEvent {}
 
-class FormSubmitted extends AddWeightEvent  {}
+class FormSubmitted extends AddWeightEvent {}

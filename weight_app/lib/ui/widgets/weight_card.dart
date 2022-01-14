@@ -1,9 +1,62 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:network_req/network_req.dart';
+import 'package:weight_app/bloc/user_weight/get_weight/get_weight_bloc.dart';
 import 'package:weight_app/models/constants.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+class ViewWeights extends StatefulWidget {
+  ViewWeights({Key? key}) : super(key: key);
+
+  @override
+  _ViewWeightsState createState() => _ViewWeightsState();
+}
+
+class _ViewWeightsState extends State<ViewWeights> {
+  late Timer timer;
+  final ScrollController _controllerOne = ScrollController();
+
+  setUpTimedFetch() {
+    timer = Timer.periodic(Duration(seconds: 5), (Timer t) {
+      if (mounted) {
+        context.read<GetWeightBloc>().add(GetUserWeightData(userID: 6));
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GetWeightBloc, GetWeightState>(
+      bloc: context.read<GetWeightBloc>(),
+      builder: (context, state) {
+        if (state is GetWeightInitial) {
+          context.read<GetWeightBloc>().add(GetUserWeightData(userID: 6));
+        }
+        if (state is GetWeightLoading) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        return StreamBuilder<List<UserWeight>>(
+            stream: context.read<GetWeightBloc>().data,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return WeightCard(data: snapshot.data![index]);
+                    });
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            });
+      },
+    );
+  }
+}
 
 class WeightCard extends StatelessWidget {
   const WeightCard({Key? key, required this.data}) : super(key: key);

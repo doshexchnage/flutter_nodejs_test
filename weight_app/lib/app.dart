@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, unused_import
 
 import 'package:flutter/material.dart';
+import 'package:weight_app/models/user_model.dart';
 import 'package:weight_app/ui/home.dart';
 import 'package:weight_app/ui/registration.dart';
 
@@ -20,7 +21,11 @@ class MyApp extends StatelessWidget {
       ),
       // home: RegistrationPage(title: 'User Registration', key: key),
       // home: LoginPage(title: 'User Login'),
-      home: HomePage(title: 'Weight App'),
+      home: HomePage(
+        title: 'Weight App',
+        userInfo:
+            UserLogin.fromJson({"userId": 6, "username": "MeAlpha", "age": 99}),
+      ),
     );
   }
 }

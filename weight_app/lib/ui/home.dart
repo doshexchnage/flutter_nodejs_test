@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:network_req/network_req.dart';
 import 'package:weight_app/bloc/user_weight/add%20weight/add_weight_bloc.dart';
+import 'package:weight_app/bloc/user_weight/get_weight/get_weight_bloc.dart';
 import 'package:weight_app/models/constants.dart';
+import 'package:weight_app/models/user_model.dart';
 import 'package:weight_app/ui/widgets/weight_card.dart';
 import 'package:weight_app/ui/widgets/weight_form.dart';
 
@@ -17,8 +18,10 @@ List<Map<String, dynamic>> data = [
 ];
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key, required this.title}) : super(key: key);
+  HomePage({Key? key, required this.title, required this.userInfo})
+      : super(key: key);
   final String title;
+  final UserLogin userInfo;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -41,16 +44,16 @@ class _HomePageState extends State<HomePage> {
               width: double.infinity,
               height: 200,
               child: BlocProvider(
-                  create: (context) => AddWeightBloc(), child: AddWeightForm()),
+                  create: (context) => AddWeightBloc(userInfo: widget.userInfo),
+                  child: AddWeightForm()),
               color: secondaryColor,
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height - 310,
-              child: ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    return WeightCard(data: UserWeight.fromJson(data[index]));
-                  }),
+              child: BlocProvider(
+                create: (context) => GetWeightBloc(userInfo: widget.userInfo),
+                child: ViewWeights(),
+              ),
             ),
           ],
         ));

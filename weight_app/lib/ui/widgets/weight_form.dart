@@ -117,8 +117,15 @@ class _AddWeightFormState extends State<AddWeightForm> {
                       primary: bgColor,
                     ),
                     onPressed: state.status.isValidated
-                        ? () =>
-                            context.read<AddWeightBloc>().add(FormSubmitted())
+                        ? () {
+                            if (kDebugMode) {
+                              print(context
+                                  .read<AddWeightBloc>()
+                                  .userInfo
+                                  .userID!);
+                            }
+                            context.read<AddWeightBloc>().add(FormSubmitted());
+                          }
                         : null,
                     // style: ElevatedButton.styleFrom(
                     //   onSurface: Colors.blue,

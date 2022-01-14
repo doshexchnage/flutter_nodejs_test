@@ -14,3 +14,13 @@ class GetUserWeightData extends GetWeightEvent {
   @override
   List<Object> get props => [userID];
 }
+
+
+
+class DeleteUserWeightData extends GetWeightEvent {
+  const DeleteUserWeightData({required this.userID});
+  final int userID;
+
+  @override
+  List<Object> get props => [userID];
+}

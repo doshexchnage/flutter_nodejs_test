@@ -76,13 +76,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     _showDialog(
                         state.title, state.message, state.showCloseDialog);
                   }
-                  if (state is RegistrationStateSuccess) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                HomePage(title: 'Weight App')));
-                  }
+
                 },
                 child: RegistrationForm(),
               ),

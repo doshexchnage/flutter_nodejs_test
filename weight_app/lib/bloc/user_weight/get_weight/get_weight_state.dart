@@ -9,6 +9,8 @@ abstract class GetWeightState extends Equatable {
 
 class GetWeightInitial extends GetWeightState {}
 
+class GetWeightLoading extends GetWeightState {}
+
 
 class UserWeightData extends GetWeightState {
   const UserWeightData({required this.data});
@@ -21,7 +23,7 @@ class UserWeightData extends GetWeightState {
 
 class UserWeightResponseState extends GetWeightState {
   final String message;
-  final bool success;
 
-  const UserWeightResponseState(this.message, this.success) : super();
+
+  const UserWeightResponseState(this.message) : super();
 }

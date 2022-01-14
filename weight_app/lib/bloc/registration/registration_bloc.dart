@@ -27,7 +27,6 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<TogglePassword>(_onTogglePassword);
     on<ToggleConfirmPassword>(_onToggleConfirmPassword);
     on<FormSubmitted>(_onFormSubmitted);
-
   }
 
   final UserRegistrationAPI repo = UserRegistrationAPI();
@@ -222,7 +221,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
 
       if (sendReq.responseCode == 201) {
         emit(RegistrationStateResponse(
-            'Success', sendReq.msg + " Please head to login page", true));
+            'Success',
+            sendReq.msg + " Please Head To Login Page, Use Details Submitted",
+            true));
       } else {
         emit(RegistrationStateResponse('Failure', sendReq.msg, true));
       }
