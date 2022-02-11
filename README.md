@@ -1,59 +1,114 @@
-# flutter_test
+# Simple Weight Tracker
 
-Implement a simple weight-tracker app.
+- Server was built using **Express.js** written in **Typescript**.  
+- Model View Controller system followed.
+- Routes were Authenticated using **JWT tokens**. 
+- Client was built using **React** 
 
-#### This test requires you to write code for NodeJS and Flutter
+# How to run
 
-### NodeJS: Write something using `Express` using `NodeJS` to `create an API` that has the following endpoints:
+Ensure that you have docker engine and docker-compose installed.
 
-- /login
-- /sign_up
-- /save_weight
-- /get_weight_history
+Then, simply run the following command:
+```
+docker-compose up
+```
 
-#### Bonus features:
+This will install all the necessary dependencies and start a container for both the server and client.
 
-- /update_weight - edit an existing weight entry
-- /delete_weight - delete an entry
-- JWT Web tokens (use npm package 'jsonwebtoken') to allow authentication
-- Use Swagger for API documentation
+The server is located at http://localhost:3000.
 
-### Flutter: After sign in, the app should show a page where the user can do the following:
+The client application link will be displayed in the shell once the container is running:
 
-- Enter his/her weight into a page and submit it
-- Save this along with the current time
-- View a list of all weight entries, sorted by most recent date
+```
+You can now view react-weight-tracker in the browser.
+   Local:            http://localhost:5000
+   On Your Network:  http://172.18.0.4:5000
+```
+In this case, the client application is running at http://172.18.0.4:5000.
 
-#### Bonus features:
+# Backend routes
+The backend has two different types of routes under the `/user` (public) route and the `/weight` (protected) route
+## User routes
+These are public and don't need any authorization tokens.
 
-- Edit an existing weight entry
-- Delete entries
-- Sign-out functionality
+### POST `/user/sign_up`
+```json
+body: {
+  username: "test",
+  password: "password"
+}
 
-### Notes:
+```
+returns a message confirming user registration into the database.
 
-Feel free to use dependency injection libraries such as `Provider`.
 
-When building the UI and navigating between screens, choose the approach that makes most sense in terms of usability.
+### POST `/user/login`
+```json
+body :{
+  username: "test",
+  password: "password"
+}
 
-Adding unit tests is `not` required for this project.
+```
+returns a **JWT** authorization token if successfully logged in.
 
-If some requirements appear to be vague or lack sufficient details, make assumptions based on your own judgment.
+## Weight routes
+These are private and need a **JWT** token in the headers as follows:
 
-The assignment will be evaluated according to the following criteria:
+```json
+headers: {
+  "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMDRmMThmYWM0YzBlMDA0ODkyODdkOCIsInVzZXJuYW1lIjoidGVzdCIsImlhdCI6MTY0NDQ5MTg2MiwiZXhwIjoxNjQ0NDkzNjYyfQ.YVP1su_nKanMquPYfnfSAt60L4_t77dnqssv4Js6q7I"
+}
+```
 
-- The app works and satisfies the requirements outlined above
-- General project structure and organization of code
-- Separation of concerns between UI, authentication, database code
-- Implicity - we don't require an over-engineered solution
-- Naming conventions for variables, functions and classes
+### POST `/weight/save_weight`
+```json
+body :{
+  userID: "6204f18fac4c0e00489287d8",
+  weight: 50
+}
 
-Making the UI look nice is not required as part of this task - but is a bonus!
+```
+userID links the weight record to a user in the database.
+returns a success message with the created weight object in JSON.
 
-The expected duration of this assignment is between 1 and 4 days ONLY
+### PUT `/weight/update_weight`
+```json
+body :{
+  _id: "6204f4a8b898d200d20fe5c6",
+  weight: 50
+}
 
-When submitting the assignment, compress the entire Flutter project into a zip file, and send an email to `alex@doshex.com, siya@doshex.com, and fred@doshex.com` to notify them of your completion. 
+```
+_id refers to the id of the weight record in the database.
+returns a success message with the updated weight object in JSON.
 
-`Bonus: using GIT, check-in your code to this repositoy with a branch using your name! Ask questions if something is wrong with this process for you`
+### POST `/weight/delete_weight`
+```json
+body :{
+  _id: "6204f4a8b898d200d20fe5c6",
+}
 
-If there are any parts of this assignment that you can not complete, include a brief explanation of why.
+```
+_id refers to the id of the weight record in the database.
+returns a success message confirming the deletion of the weight record in the database.
+
+### POST `/weight/get_weight_history`
+```json
+params :{
+  userID: "6204f4a8b898d200d20fe5c6",
+}
+
+```
+userID refers to a user in the database.
+returns an array of weight records linked to the userID
+
+# Frontend/client
+The frontend consists of three pages - a sign up page, login page and the weight tracker page.
+
+Register in the sign up page and log in to get acess to the weight tracker.
+
+Type a weight and hit save to add a record to the database.
+
+You can also edit and update the weight values displayed.
