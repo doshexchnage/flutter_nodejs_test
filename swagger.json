@@ -1,0 +1,237 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Weight Tracker",
+      "description": "Weight Tracker Application API",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "tags": [
+      {
+        "name": "Auth",
+        "description": "API for users in the system"
+      },
+      {
+        "name": "Weight",
+        "description": "API for weight in the system"
+      }
+    ],
+    "schemes": [
+      "http"
+    ],
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "paths": {
+      "/api/auth/login": {
+        "post": {
+          "tags": [
+            "Auth"
+          ],
+          "description": "login user",
+          "parameters": [
+            {
+              "name": "user",
+              "in": "body",
+              "description": "User credentials",
+              "schema": {
+                "$ref": "#/definitions/Login"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "user is signed in",
+              "schema": {
+                "$ref": "#/definitions/Login"
+              }
+            }
+          }
+        } 
+      },
+      
+      "/api/auth/signup": {
+        "post": {
+          "tags": [
+            "Auth"
+          ],
+          "description": "Create new user in system",
+          "parameters": [
+            {
+              "name": "user",
+              "in": "body",
+              "description": "User that we want to create",
+              "schema": {
+                "$ref": "#/definitions/Signup"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "New user is created",
+              "schema": {
+                "$ref": "#/definitions/Signup"
+              }
+            }
+          }
+        } 
+      },
+     "/api/weight/add": {
+        "post": {
+          "tags": [
+            "Weight"
+          ],
+          "description": "create new user weight",
+          "parameters": [
+            {
+              "name": "user",
+              "in": "body",
+              "description": "weight that we want to create",
+              "schema": {
+                "$ref": "#/definitions/WeightAdd"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "weight added",
+              "schema": {
+                "$ref": "#/definitions/WeightAdd"
+              }
+            }
+          }
+        } 
+      },
+      "/api/weight/history": {
+        "get": {
+            "tags": [
+              "Weight"
+            ],
+            "summary": "Get all user weight",
+            "responses": {
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/definitions/WeightHistory"
+                }
+              }
+            }
+          }
+      },
+      "/api/weight/update": {
+           "post": {
+          "tags": [
+            "Weight"
+          ],
+          "description": "update weight entries",
+          "parameters": [
+            {
+              "name": "user",
+              "in": "body",
+              "description": "weight that we want to update",
+              "schema": {
+                "$ref": "#/definitions/WeightHistory"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "update weight entries",
+              "schema": {
+                "$ref": "#/definitions/WeightHistory"
+              }
+            }
+          }
+        } 
+      }
+    },
+    "definitions": {
+      "Login": {
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "uniqueItems": true
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Signup": {
+        "required": [
+          "name",
+          "email",
+          "password"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+         
+        }
+      },
+      "WeightAdd": {
+        "required": [
+          "weight",
+          "time"
+        ],
+        "properties": {
+          "weight": {
+            "type": "string"
+          },
+          "time": {
+            "type": "string"
+          }
+         
+        }
+      },
+      "WeightHistory": {
+        "type": "array",
+        "items":{
+          "type": "object",
+          "$ref": "#/definitions/WeightAdd"
+        }
+      }
+     
+    },
+     "securityDefinitions": {
+      "bearerAuth": {
+        "name": "Authorization",
+        "in": "header",
+        "type": "apiKey",
+        "description": "JWT Authorization header"
+      }
+  },
+  "security": [ { "bearerAuth": [] } ]
+  }
