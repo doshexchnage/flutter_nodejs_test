@@ -1,0 +1,10 @@
+environment_config:
+  path: env_config.dart
+  fields:
+   API_BASE_URL:
+      env_var: API_BASE_URL
+      default: "http://localhost:3000/api/"
+      dotenv: true
+  
+  imports:
+    - dart:io
