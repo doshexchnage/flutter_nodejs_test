@@ -17,7 +17,7 @@ void main() async {
         lazy: true,
         create: (_) => AuthProvider(storage: AppStore.instance, api: UseAuthApi())),
     ChangeNotifierProvider(
-        create: (_) => WeightProvider(storage: AppStore.instance, api: UseWeightApi())),
+        create: (_) => WeightProvider(api: UseWeightApi())),
   ], child: const MyApp()));
 }
 
